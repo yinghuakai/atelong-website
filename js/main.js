@@ -146,7 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
             counterAnimated = true;
             
             counters.forEach(function(counter) {
+                const originalText = counter.textContent;
                 const target = parseInt(counter.textContent);
+                // 提取数字后面的文字后缀（如"万+"）
+                const suffix = originalText.replace(/^[0-9]+/, '');
                 let count = 0;
                 const duration = 2000;
                 const increment = target / (duration / 16);
@@ -154,10 +157,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 function updateCount() {
                     count += increment;
                     if (count < target) {
-                        counter.textContent = Math.floor(count);
+                        counter.textContent = Math.floor(count) + suffix;
                         requestAnimationFrame(updateCount);
                     } else {
-                        counter.textContent = target;
+                        counter.textContent = target + suffix;
                     }
                 }
                 
