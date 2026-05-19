@@ -6,16 +6,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     // ===== Loader =====
-    window.addEventListener('load', function() {
+    // 定时器兜底：防止资源加载卡住导致页面一直转圈
+    const dismissLoader = function() {
         const loader = document.getElementById('loader');
-        if (loader) {
+        if (loader && loader.style.display !== 'none') {
+            loader.style.opacity = '0';
             setTimeout(function() {
-                loader.style.opacity = '0';
-                setTimeout(function() {
-                    loader.style.display = 'none';
-                }, 500);
+                loader.style.display = 'none';
             }, 500);
         }
+    };
+    
+    // 2秒后自动关闭loader（兜底）
+    setTimeout(dismissLoader, 2000);
+    
+    // 正常load事件也关闭loader
+    window.addEventListener('load', function() {
+        setTimeout(dismissLoader, 500);
     });
     
     // ===== Mobile Navigation =====
